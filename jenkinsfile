@@ -1,0 +1,99 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'jdk17'
+        nodejs 'node16' 
+    }
+
+    environment {
+        SCANNER_HOME = tool 'sonar-scanner'
+    }
+
+    stages {
+        stage('clean workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('checkout from Git') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Pratik-Ahire-git/Netflix-DevSecOps-Project.git'
+            }
+        }
+
+        stage("SonarQube Analysis") {
+            steps {
+                withSonarQubeEnv('sonar-server') {
+                    sh '''$SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectName=Netflix \
+                        -Dsonar.projectKey=netflix'''
+                }
+            }
+        }
+
+        stage("Quality Gate") {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+                }
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('OWASP FS SCAN') {
+            steps {
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+
+        stage('TRIVY FS SCAN') {
+            steps {
+                sh "trivy fs . > trivyfs.txt"
+            }
+        }
+
+        stage("Docker Build and Push") {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                        sh "docker build --build-arg TMDB_V3_API_KEY=95c73e3eef62f13c14960b30f72dffe3 -t netflix ."
+                        sh "docker tag netflix pratik023/netflix:latest"
+                        sh "docker push pratik023/netflix:latest"
+                    }
+                }
+            }
+        }
+        
+        stage("Docker Image Scan") {
+            steps {
+                sh "trivy image pratik023/netflix:latest > trivyimage.txt"
+            }
+        }
+
+        stage("Deploy the container") {
+            steps {
+                sh "docker run -d -p 8081:80 pratik023/netflix:latest"
+            }
+        }
+    }
+
+    post {
+        always {
+            emailext attachLog: true,
+                subject: "'${currentBuild.result}'",
+                body: "Project: ${env.JOB_NAME}<br/>" +
+                      "Build Number: ${env.BUILD_NUMBER}<br/>" +
+                      "URL: ${env.BUILD_URL}<br/>",
+                to: 'demondevops1@gmail.com',
+                attachmentsPattern: 'trivyfs.txt,trivyimage.txt'
+        }
+    }
+}
