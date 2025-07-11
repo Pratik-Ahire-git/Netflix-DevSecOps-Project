@@ -4,7 +4,7 @@
 
 # 🧩 Architecture Diagram
 
-![Netflix](Images\Netflix_Architecture_Diagram.png)
+![Netflix](Images/Netflix_Architecture_Diagram.png)
 
 This project demonstrates a complete CI/CD pipeline for a Netflix-style web application using **Jenkins, Docker, Kubernetes**, and **DevSecOps practices** such as **static analysis, dependency checks, image scanning**, and **email notifications**.
 
@@ -206,18 +206,18 @@ pipeline {
 
 
 # 📸 Screenshots
-
+ 
 ## ✅ Jenkins Pipeline Execution
 
 
-![Jenkins_stages](Images\Jenkins_Pipeline_stages_1.png)
-![Jenkins_stages](Images\Jenkins_Pipeline_stages_2.png)
+![Jenkins_stages](Images/Jenkins_Pipeline_stages_1.png)
+![Jenkins_stages](Images/Jenkins_Pipeline_stages_2.png)
 ____
 ## ✅ SonarQube Code Quality
 
-![Jenkins_stages](Images\SonarQube_Report.png)
-![Jenkins_stages](Images\SonarQube_Issue.png)
+![Jenkins_stages](Images/SonarQube_Report.png)
+![Jenkins_stages](Images/SonarQube_Issue.png)
 ---
 ## ✅ OWASP Dependency Report
 
-![Jenkins_stages](Images\OWASP_Dependency_Report.png)
+![Jenkins_stages](Images/OWASP_Dependency_Report.png)
