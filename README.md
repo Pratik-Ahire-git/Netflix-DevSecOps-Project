@@ -2,7 +2,7 @@
 
 ![Netflix](Images/Netflix.png)
 
-# 🧩 Architecture Diagram
+# 🏗️  Architecture Diagram
 
 ![Netflix](Images/Netflix_Architecture_Diagram.png)
 
@@ -81,8 +81,6 @@ Ensure the following Jenkins plugins are installed:
 12. Email Notification with Logs
 ```
 ---
-
-# 🧩 Architecture Diagram
 
 # 📝 Jenkinsfile (Pipeline as Code)
 See full Jenkinsfile in Jenkinsfile in repo
@@ -221,3 +219,19 @@ ____
 ## ✅ OWASP Dependency Report
 
 ![Jenkins_stages](Images/OWASP_Dependency_Report.png)
+
+## ✅ Monitoring 
+
+![Jenkins_stages](Images/Jenkins_Server_Metrics.png)
+Metrics of Jenkins Server
+---
+![Jenkins_stages](Images/Monitoring_Node_Metrics.png)
+Metrics of Node_Exporter Monitoring Server
+
+---
+![Jenkins_stages](Images/K8s_Master_Node_Metrics.png)
+Metrics of K8s_Master_Node_Server
+
+---
+![Jenkins_stages](Images/K8s_Worker_Node_Metrics.png)
+Metrics of K8s_Worker_Node_Server
