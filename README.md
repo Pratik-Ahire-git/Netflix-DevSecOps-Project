@@ -1,6 +1,6 @@
 # 🎬 Netflix Clone CI/CD Pipeline with Monitoring, Security & Notifications
 
-![Netflix](.\Images\Netflix.png)
+![Netflix](Images/Netflix.png)
 
 # 🧩 Architecture Diagram
 
